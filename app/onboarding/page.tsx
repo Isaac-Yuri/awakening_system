@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Sword, Wand2, Crosshair, Target, Heart, ChevronRight, Sparkles } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import EnergyRain from './EnergyRain';
 
 const classes = [
   { id: 'warrior', name: 'Guerreiro', icon: Sword, color: 'from-red-500 to-orange-500', desc: 'Disciplina física, resistência mental e constância' },
@@ -19,6 +20,12 @@ export default function Onboarding() {
   const [selectedClass, setSelectedClass] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [activating, setActivating] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
 
   const renderStep = () => {
     switch(step) {
@@ -227,25 +234,7 @@ export default function Onboarding() {
   return (
     <div className="min-h-screen flex items-center justify-center p-6">
       {/* Animated background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0.1, y: '100vh' }}
-            animate={{ 
-              opacity: [0.1, 0.3, 0.1],
-              y: '-100vh'
-            }}
-            transition={{
-              duration: 10 + Math.random() * 10,
-              repeat: Infinity,
-              delay: Math.random() * 5
-            }}
-            className="absolute w-1 h-20 bg-gradient-to-t from-transparent via-purple-500 to-transparent"
-            style={{ left: `${Math.random() * 100}%` }}
-          />
-        ))}
-      </div>
+      {mounted && <EnergyRain />}
 
       <AnimatePresence mode="wait">
         {renderStep()}
